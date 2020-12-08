@@ -1,5 +1,4 @@
-import styled, { keyframes } from "styled-components";
-import { shade } from "polished";
+import styled from "styled-components";
 
 export const Container = styled.div`
   height: 100vh;
@@ -9,10 +8,27 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-  place-content: center;
-  width: 100%;
   align-items: center;
   max-width: 350px;
+`;
+
+export const Question = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  form {
+    width: 100%;
+    padding: 5px;
+  }
+`;
+
+export const QuestionForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  width: 100%;
+  padding: 5px;
 `;
