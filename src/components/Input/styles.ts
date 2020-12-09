@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div``;
 
-export const TextAreaContainer = styled.div`
+export const InputAreaContainer = styled.div`
   flex: 1;
   width: 100%;
   background: #232129;
@@ -13,13 +13,12 @@ export const TextAreaContainer = styled.div`
   & + div {
     margin-top: 10px;
   }
-  textarea {
+  input {
     color: #f4ede8;
     background: transparent;
     flex: 1;
     border: 0;
     width: 100%;
-    height: 100px;
     font-size: 16px;
     &::placeholder {
       color: #666360;

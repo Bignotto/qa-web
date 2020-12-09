@@ -13,7 +13,7 @@ const Textarea: React.FC<TextareaProps> = ({ label, name, ...rest }) => {
       <Container>
         {label && <label htmlFor={name}>{label}</label>}
         <TextAreaContainer>
-          <textarea id={name} placeholder="Faça uma pergunta" {...rest} />
+          <textarea id={name} {...rest} />
         </TextAreaContainer>
       </Container>
     </div>

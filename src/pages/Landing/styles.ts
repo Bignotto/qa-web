@@ -31,4 +31,8 @@ export const QuestionForm = styled.form`
   margin-top: 24px;
   width: 100%;
   padding: 5px;
+
+  h3 {
+    margin-bottom: 12px;
+  }
 `;
