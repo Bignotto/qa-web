@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, ChangeEvent, FormEvent } from "react";
 
 import TextArea from "../../components/TextArea/TextArea";
 import Button from "../../components/Button/Button";
@@ -9,9 +9,13 @@ import logo from "../../assets/logo.svg";
 import { useHistory } from "react-router-dom";
 
 const Landing: React.FC = () => {
+  const [question_id, setQuestion_id] = useState("");
+
   const history = useHistory();
 
-  const [question_id, setQuestion_id] = useState<string | null>("");
+  const outrobotao = useCallback((event: FormEvent<HTMLFormElement>) => {
+    console.log(question_id);
+  }, []);
 
   const handleAnswer = useCallback(() => {
     history.push(`/answer/${question_id}`);
@@ -22,16 +26,21 @@ const Landing: React.FC = () => {
       <Content>
         <img src={logo} alt="LOGO" />
         <h2>Questione seu público</h2>
-        <QuestionForm>
-          <TextArea name="bio" placeholder="Faça uma pergunta" />
+        <p>{question_id}</p>
+        <QuestionForm onSubmit={outrobotao}>
+          <TextArea name="questionText" placeholder="Faça uma pergunta" />
           <Button type="submit">Perguntar</Button>
         </QuestionForm>
         <QuestionForm onSubmit={handleAnswer}>
           <h3>Responda a uma pergunta:</h3>
           <Input
-            name="question_id"
+            name="questionId"
             placeholder="Código da pergunta"
-            onChange={(e) => setQuestion_id(e.target.textContent)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              setQuestion_id(event.target.value);
+              console.log(question_id);
+            }}
+            value={question_id}
           />
           <Button type="submit">Respnder</Button>
         </QuestionForm>
