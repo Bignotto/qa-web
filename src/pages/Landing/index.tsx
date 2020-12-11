@@ -8,25 +8,43 @@ import { Container, Content, QuestionForm } from "./styles";
 import logo from "../../assets/logo.svg";
 import { useHistory } from "react-router-dom";
 
+interface AnserQuestion {
+  questionId: string;
+}
+
 const Landing: React.FC = () => {
-  const [question_id, setQuestion_id] = useState("");
+  const [answerData, setAnswerData] = useState<AnserQuestion>({
+    questionId: "initial value",
+  });
 
   const history = useHistory();
 
   const outrobotao = useCallback((event: FormEvent<HTMLFormElement>) => {
-    console.log(question_id);
+    event.preventDefault();
+    console.log(answerData);
   }, []);
 
-  const handleAnswer = useCallback(() => {
-    history.push(`/answer/${question_id}`);
-  }, [history]);
+  function handleQuestionIdChange(event: ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+    setAnswerData({ questionId: event.target.value });
+    console.log(answerData);
+  }
+
+  const handleAnswer = useCallback(
+    (event: FormEvent) => {
+      event.preventDefault();
+      console.log(answerData);
+      history.push(`/answer/${answerData.questionId}`);
+    },
+    [history]
+  );
 
   return (
     <Container>
       <Content>
         <img src={logo} alt="LOGO" />
         <h2>Questione seu público</h2>
-        <p>{question_id}</p>
+        <p>{answerData.questionId}</p>
         <QuestionForm onSubmit={outrobotao}>
           <TextArea name="questionText" placeholder="Faça uma pergunta" />
           <Button type="submit">Perguntar</Button>
@@ -35,12 +53,10 @@ const Landing: React.FC = () => {
           <h3>Responda a uma pergunta:</h3>
           <Input
             name="questionId"
+            label="Question"
+            type="text"
             placeholder="Código da pergunta"
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              setQuestion_id(event.target.value);
-              console.log(question_id);
-            }}
-            value={question_id}
+            onChange={handleQuestionIdChange}
           />
           <Button type="submit">Respnder</Button>
         </QuestionForm>
