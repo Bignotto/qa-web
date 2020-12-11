@@ -25,7 +25,6 @@ const Landing: React.FC = () => {
   }, []);
 
   function handleQuestionIdChange(event: ChangeEvent<HTMLInputElement>) {
-    event.preventDefault();
     setAnswerData({ questionId: event.target.value });
     console.log(answerData);
   }
