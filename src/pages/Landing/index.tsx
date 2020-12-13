@@ -4,37 +4,36 @@ import { useHistory } from "react-router-dom";
 import "./styles.css";
 import logo from "../../assets/logo.svg";
 
-interface AnserQuestion {
-  questionId: string;
-}
-
 const Landing: React.FC = () => {
-  const [answerData, setAnswerData] = useState<AnserQuestion>({
-    questionId: "initial value",
-  });
+  const [questionId, setQuestionId] = useState("");
+  const [questionText, setQuestionText] = useState("");
 
   const history = useHistory();
 
-  const outrobotao = useCallback(
+  const handleNewQuestion = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      console.log(answerData);
+      console.log(questionText);
     },
-    [answerData]
+    [questionText]
   );
-
-  function handleQuestionIdChange(event: ChangeEvent<HTMLTextAreaElement>) {
-    setAnswerData({ questionId: event.target.value });
-  }
 
   const handleAnswer = useCallback(
     (event: FormEvent) => {
       event.preventDefault();
-      console.log(answerData);
-      history.push(`/answer/${answerData.questionId}`);
+      console.log(questionId);
+      history.push(`/answer/${questionId}`);
     },
-    [history]
+    [history, questionId]
   );
+
+  function handleQuestionTextChange(event: ChangeEvent<HTMLTextAreaElement>) {
+    setQuestionText(event.target.value);
+  }
+
+  function handleQuestionIdChange(event: ChangeEvent<HTMLInputElement>) {
+    setQuestionId(event.target.value);
+  }
 
   return (
     <div id="page-landing">
@@ -42,10 +41,21 @@ const Landing: React.FC = () => {
         <img src={logo} alt="LOGO" />
         <h2>Questione seu público</h2>
       </header>
-      <form onSubmit={outrobotao}>
+      <form onSubmit={handleNewQuestion}>
         <div className="field">
           <label htmlFor="name">Faça uma pergunta</label>
           <textarea
+            name="question"
+            id="question"
+            onChange={handleQuestionTextChange}
+          />
+        </div>
+        <button type="submit">Perguntar</button>
+      </form>
+      <form onSubmit={handleAnswer}>
+        <div className="field">
+          <label htmlFor="name">Responda uma pergunta</label>
+          <input
             name="question"
             id="question"
             onChange={handleQuestionIdChange}
