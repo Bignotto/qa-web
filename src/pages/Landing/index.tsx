@@ -1,66 +1,69 @@
 import React, { useCallback, useState, ChangeEvent, FormEvent } from "react";
-
-import TextArea from "../../components/TextArea/TextArea";
-import Button from "../../components/Button/Button";
-import Input from "../../components/Input/Input";
-import { Container, Content, QuestionForm } from "./styles";
-
-import logo from "../../assets/logo.svg";
 import { useHistory } from "react-router-dom";
 
-interface AnserQuestion {
-  questionId: string;
-}
+import "./styles.css";
+import logo from "../../assets/logo.svg";
 
 const Landing: React.FC = () => {
-  const [answerData, setAnswerData] = useState<AnserQuestion>({
-    questionId: "initial value",
-  });
+  const [questionId, setQuestionId] = useState("");
+  const [questionText, setQuestionText] = useState("");
 
   const history = useHistory();
 
-  const outrobotao = useCallback((event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(answerData);
-  }, []);
-
-  function handleQuestionIdChange(event: ChangeEvent<HTMLInputElement>) {
-    setAnswerData({ questionId: event.target.value });
-    console.log(answerData);
-  }
+  const handleNewQuestion = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      console.log(questionText);
+    },
+    [questionText]
+  );
 
   const handleAnswer = useCallback(
     (event: FormEvent) => {
       event.preventDefault();
-      console.log(answerData);
-      history.push(`/answer/${answerData.questionId}`);
+      console.log(questionId);
+      history.push(`/answer/${questionId}`);
     },
-    [history]
+    [history, questionId]
   );
 
+  function handleQuestionTextChange(event: ChangeEvent<HTMLTextAreaElement>) {
+    setQuestionText(event.target.value);
+  }
+
+  function handleQuestionIdChange(event: ChangeEvent<HTMLInputElement>) {
+    setQuestionId(event.target.value);
+  }
+
   return (
-    <Container>
-      <Content>
+    <div id="page-landing">
+      <header>
         <img src={logo} alt="LOGO" />
         <h2>Questione seu público</h2>
-        <p>{answerData.questionId}</p>
-        <QuestionForm onSubmit={outrobotao}>
-          <TextArea name="questionText" placeholder="Faça uma pergunta" />
-          <Button type="submit">Perguntar</Button>
-        </QuestionForm>
-        <QuestionForm onSubmit={handleAnswer}>
-          <h3>Responda a uma pergunta:</h3>
-          <Input
-            name="questionId"
-            label="Question"
-            type="text"
-            placeholder="Código da pergunta"
+      </header>
+      <form onSubmit={handleNewQuestion}>
+        <div className="field">
+          <label htmlFor="name">Faça uma pergunta</label>
+          <textarea
+            name="question"
+            id="question"
+            onChange={handleQuestionTextChange}
+          />
+        </div>
+        <button type="submit">Perguntar</button>
+      </form>
+      <form onSubmit={handleAnswer}>
+        <div className="field">
+          <label htmlFor="name">Responda uma pergunta</label>
+          <input
+            name="question"
+            id="question"
             onChange={handleQuestionIdChange}
           />
-          <Button type="submit">Respnder</Button>
-        </QuestionForm>
-      </Content>
-    </Container>
+        </div>
+        <button type="submit">Perguntar</button>
+      </form>
+    </div>
   );
 };
 
