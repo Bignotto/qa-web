@@ -12,8 +12,9 @@ const Landing: React.FC = () => {
 
   const handleNewQuestion = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      console.log(questionText);
+      //event.preventDefault();
+      localStorage.setItem("question", questionText);
+      history.push("/ask");
     },
     [questionText]
   );
@@ -21,7 +22,6 @@ const Landing: React.FC = () => {
   const handleAnswer = useCallback(
     (event: FormEvent) => {
       event.preventDefault();
-      console.log(questionId);
       history.push(`/answer/${questionId}`);
     },
     [history, questionId]
@@ -43,10 +43,10 @@ const Landing: React.FC = () => {
       </header>
       <form onSubmit={handleNewQuestion}>
         <div className="field">
-          <label htmlFor="name">Faça uma pergunta</label>
+          <label htmlFor="questionText">Faça uma pergunta</label>
           <textarea
-            name="question"
-            id="question"
+            name="questionText"
+            id="questionText"
             onChange={handleQuestionTextChange}
           />
         </div>
@@ -54,10 +54,10 @@ const Landing: React.FC = () => {
       </form>
       <form onSubmit={handleAnswer}>
         <div className="field">
-          <label htmlFor="name">Responda uma pergunta</label>
+          <label htmlFor="questionId">Responda uma pergunta</label>
           <input
-            name="question"
-            id="question"
+            name="questionId"
+            id="questionId"
             onChange={handleQuestionIdChange}
           />
         </div>
