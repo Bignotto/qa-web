@@ -9,13 +9,13 @@ import { useParams } from "react-router-dom";
 // import logo from "../../assets/logo.svg";
 
 interface ParamTypes {
-  question_id: string;
+  questionId: string;
 }
 
 const AnswerQuestion: React.FC = () => {
-  const { question_id } = useParams<ParamTypes>();
+  const { questionId } = useParams<ParamTypes>();
 
-  return <h1>Answer question route working! {question_id}</h1>;
+  return <h1>Answer question route working! {questionId}</h1>;
 };
 
 export default AnswerQuestion;
