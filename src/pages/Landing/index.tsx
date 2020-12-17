@@ -16,7 +16,7 @@ const Landing: React.FC = () => {
       localStorage.setItem("question", questionText);
       history.push("/ask");
     },
-    [questionText]
+    [history, questionText]
   );
 
   const handleAnswer = useCallback(
