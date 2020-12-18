@@ -31,9 +31,9 @@ const AskQuestion: React.FC = () => {
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       try {
-        await api.post("questions", JSON.stringify(formData));
+        await api.post("questions", formData);
       } catch (error) {
-        console.log(formData, error);
+        console.log(formData, error.response);
       }
 
       history.push("/result");
@@ -62,19 +62,39 @@ const AskQuestion: React.FC = () => {
         <h3>Escreva as respostas possíveis para sua pergunta:</h3>
         <div className="option">
           <label htmlFor="option_1">Opção 1:</label>
-          <input type="text" id="option_1" />
+          <input
+            type="text"
+            id="option_1"
+            name="option_1"
+            onChange={handleInputChange}
+          />
         </div>
         <div className="option">
           <label htmlFor="option_2">Opção 2:</label>
-          <input type="text" id="option_2" />
+          <input
+            type="text"
+            id="option_2"
+            name="option_2"
+            onChange={handleInputChange}
+          />
         </div>
         <div className="option">
           <label htmlFor="option_3">Opção 3:</label>
-          <input type="text" id="option_3" />
+          <input
+            type="text"
+            id="option_3"
+            name="option_3"
+            onChange={handleInputChange}
+          />
         </div>
         <div className="option">
           <label htmlFor="option_4">Opção 4:</label>
-          <input type="text" id="option_4" />
+          <input
+            type="text"
+            id="option_4"
+            name="option_4"
+            onChange={handleInputChange}
+          />
         </div>
         <div className="option">
           <label htmlFor="option_5">Opção 5:</label>
