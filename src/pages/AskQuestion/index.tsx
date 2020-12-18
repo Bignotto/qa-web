@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { FormEvent, useCallback } from "react";
+import { Link, useHistory } from "react-router-dom";
 
 import { FiArrowLeftCircle } from "react-icons/fi";
 import "./styles.css";
@@ -7,6 +7,15 @@ import logo from "../../assets/logo.svg";
 
 const AskQuestion: React.FC = () => {
   const question = localStorage.getItem("question");
+
+  const history = useHistory();
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      history.push("/result");
+    },
+    [history]
+  );
 
   return (
     <div id="page-new-question">
@@ -20,7 +29,7 @@ const AskQuestion: React.FC = () => {
         </div>
       </header>
       <h2>{question}</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <h3>Escreva as respostas possíveis para sua pergunta:</h3>
         <div className="option">
           <label htmlFor="option1">Opção 1:</label>

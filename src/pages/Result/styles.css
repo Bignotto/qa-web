@@ -1,0 +1,41 @@
+#page-result {
+  background: #312e38;
+  width: 100%;
+  max-width: 350px;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+#page-result header {
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px 0 10px;
+}
+
+#page-result header img {
+  height: 100px;
+}
+
+#page-result header .back-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#page-result header .back-link a {
+  display: block;
+  color: #f4ede8;
+  text-decoration: none;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+}
+#page-result header .back-link a:hover {
+  color: #bebebe;
+}
+
+#page-result header .back-link a svg {
+  margin-right: 10px;
+}
