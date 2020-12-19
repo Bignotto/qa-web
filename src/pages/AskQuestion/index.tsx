@@ -1,5 +1,12 @@
-import React, { ChangeEvent, FormEvent, useCallback, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { Link, useHistory } from "react-router-dom";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
 import api from "../../services/api";
 
@@ -22,10 +29,21 @@ const AskQuestion: React.FC = () => {
 
   const history = useHistory();
 
+  const [fingerprint, setFingerprint] = useState("");
+
   const [formData, setFormData] = useState<NewQuestion>({
     user_id: "thiago",
     text: question || "erro",
   });
+
+  useEffect(() => {
+    FingerprintJS.load().then((agent) => {
+      agent.get().then((result) => {
+        setFingerprint(result.visitorId);
+        setFormData({ ...formData, user_id: result.visitorId });
+      });
+    });
+  }, []);
 
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -105,7 +123,7 @@ const AskQuestion: React.FC = () => {
             onChange={handleInputChange}
           />
         </div>
-        <button>Criar pergunta</button>
+        <button>{fingerprint ? "Criar Pergunta" : "Aguarde..."}</button>
       </form>
     </div>
   );
