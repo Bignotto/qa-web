@@ -43,7 +43,7 @@ const AskQuestion: React.FC = () => {
         setFormData({ ...formData, user_id: result.visitorId });
       });
     });
-  }, []);
+  }, [formData]);
 
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
