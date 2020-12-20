@@ -1,9 +1,10 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { FiArrowLeftCircle } from "react-icons/fi";
+import React, { useEffect, useState } from "react";
+import { useParams, Link, useHistory } from "react-router-dom";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
 import api from "../../services/api";
 
+import { FiArrowLeftCircle } from "react-icons/fi";
 import logo from "../../assets/logo.svg";
 import "./styles.css";
 
@@ -27,12 +28,21 @@ interface Question {
   ];
 }
 
+interface Answer {
+  user_id: string;
+  question_id: string;
+  option_id: number;
+}
+
 const AnswerQuestion: React.FC = () => {
   const { questionId } = useParams<ParamTypes>();
+  const [fingerprint, setFingerprint] = useState("");
   const [question, setQuestion] = useState<Question>({
     user_id: "loading",
     text: "loading",
   });
+
+  const history = useHistory();
 
   useEffect(() => {
     if (!questionId) return;
@@ -40,10 +50,29 @@ const AnswerQuestion: React.FC = () => {
     api.get(`questions/${questionId}`).then((response) => {
       setQuestion(response.data);
     });
+  }, [questionId]);
+
+  useEffect(() => {
+    FingerprintJS.load().then((agent) => {
+      agent.get().then((result) => {
+        setFingerprint(result.visitorId);
+      });
+    });
   }, []);
 
   async function handleAnswer(id: number) {
-    console.log(id);
+    const answer: Answer = {
+      user_id: fingerprint,
+      question_id: questionId,
+      option_id: id,
+    };
+    try {
+      await api.post("answer", answer);
+    } catch (error) {
+      console.log(answer, error.response);
+    }
+
+    history.push("/result");
   }
 
   return (
