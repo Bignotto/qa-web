@@ -49,12 +49,12 @@ const AskQuestion: React.FC = () => {
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       try {
-        await api.post("questions", formData);
+        await api.post("questions", formData).then((response) => {
+          history.push(`/result/${response.data.easy_id}`);
+        });
       } catch (error) {
         console.log(formData, error.response);
       }
-
-      history.push("/result");
     },
     [history, formData]
   );

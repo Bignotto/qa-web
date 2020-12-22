@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import api from "../../services/api";
@@ -33,16 +33,13 @@ interface Answer {
   option_id: number;
 }
 
-interface Results {
-  [id: number]: number[];
-}
 const Result: React.FC = () => {
   const { questionId } = useParams<ParamTypes>();
   const [question, setQuestion] = useState<Question>({
     user_id: "loading",
     text: "loading",
   });
-  const [results, setResults] = useState<Results>([]);
+  const [results, setResults] = useState<number[]>([]);
 
   useEffect(() => {
     if (!questionId) return;
@@ -52,6 +49,11 @@ const Result: React.FC = () => {
       setResults(response.data.results);
     });
   }, [questionId]);
+
+  const answersTotal = useMemo(() => {
+    const total = results.reduce((a, i) => a + i, 0);
+    return total;
+  }, [results]);
 
   return (
     <div id="page-result">
@@ -72,14 +74,25 @@ const Result: React.FC = () => {
         <div className="results-content">
           {question.options?.map((option) => {
             return (
-              <div className="result">
-                <h3>
-                  {option.text}: {results[option.id]} votos
-                </h3>
+              <div className="result" key={option.id}>
+                <h3>{option.text}</h3>
+                <p>
+                  {results[option.id]} -
+                  {(results[option.id] / answersTotal) * 100}
+                </p>
+                <div
+                  className="bar"
+                  style={{
+                    width: `${(results[option.id] / answersTotal) * 100}%`,
+                  }}
+                >
+                  .
+                </div>
               </div>
             );
           })}
         </div>
+        <h2>Total de respostas: {answersTotal}</h2>
       </div>
     </div>
   );
