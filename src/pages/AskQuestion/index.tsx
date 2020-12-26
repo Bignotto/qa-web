@@ -14,55 +14,79 @@ import { FiArrowLeftCircle } from "react-icons/fi";
 import "./styles.css";
 import logo from "../../assets/logo.svg";
 
-interface NewQuestion {
-  user_id: string;
-  text: string;
-  option_1?: string;
-  option_2?: string;
-  option_3?: string;
-  option_4?: string;
-  option_5?: string;
-}
-
 const AskQuestion: React.FC = () => {
   const question = localStorage.getItem("question");
 
-  const history = useHistory();
-
   const [fingerprint, setFingerprint] = useState("");
 
-  const [formData, setFormData] = useState<NewQuestion>({
-    user_id: "thiago",
-    text: question || "erro",
-  });
+  const [option1, setOption1] = useState("");
+  const [option2, setOption2] = useState("");
+  const [option3, setOption3] = useState("");
+  const [option4, setOption4] = useState("");
+  const [option5, setOption5] = useState("");
+
+  const history = useHistory();
 
   useEffect(() => {
     FingerprintJS.load().then((agent) => {
       agent.get().then((result) => {
         setFingerprint(result.visitorId);
-        setFormData({ ...formData, user_id: result.visitorId });
       });
     });
-  }, [formData]);
+  }, [fingerprint]);
+
+  function handleOption1Change(event: ChangeEvent<HTMLInputElement>) {
+    setOption1(event.target.value);
+  }
+
+  function handleOption2Change(event: ChangeEvent<HTMLInputElement>) {
+    setOption2(event.target.value);
+  }
+
+  function handleOption3Change(event: ChangeEvent<HTMLInputElement>) {
+    setOption3(event.target.value);
+  }
+
+  function handleOption4Change(event: ChangeEvent<HTMLInputElement>) {
+    setOption4(event.target.value);
+  }
+  function handleOption5Change(event: ChangeEvent<HTMLInputElement>) {
+    setOption5(event.target.value);
+  }
 
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+
+      const formData = {
+        user_id: fingerprint,
+        text: question,
+        option_1: option1,
+        option_2: option2,
+        option_3: option3,
+        option_4: option4,
+        option_5: option5,
+      };
+
       try {
-        await api.post("questions", formData);
+        await api.post("questions", formData).then((response) => {
+          history.push(`/result/${response.data.easy_id}`);
+        });
       } catch (error) {
-        console.log(formData, error.response);
+        console.log(fingerprint, formData, error.response);
       }
-
-      history.push("/result");
     },
-    [history, formData]
+    [
+      history,
+      fingerprint,
+      question,
+      option1,
+      option2,
+      option3,
+      option4,
+      option5,
+    ]
   );
-
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  }
 
   return (
     <div id="page-new-question">
@@ -84,7 +108,8 @@ const AskQuestion: React.FC = () => {
             type="text"
             id="option_1"
             name="option_1"
-            onChange={handleInputChange}
+            onChange={handleOption1Change}
+            value={option1}
           />
         </div>
         <div className="option">
@@ -93,7 +118,8 @@ const AskQuestion: React.FC = () => {
             type="text"
             id="option_2"
             name="option_2"
-            onChange={handleInputChange}
+            onChange={handleOption2Change}
+            value={option2}
           />
         </div>
         <div className="option">
@@ -102,7 +128,8 @@ const AskQuestion: React.FC = () => {
             type="text"
             id="option_3"
             name="option_3"
-            onChange={handleInputChange}
+            onChange={handleOption3Change}
+            value={option3}
           />
         </div>
         <div className="option">
@@ -111,7 +138,8 @@ const AskQuestion: React.FC = () => {
             type="text"
             id="option_4"
             name="option_4"
-            onChange={handleInputChange}
+            onChange={handleOption4Change}
+            value={option4}
           />
         </div>
         <div className="option">
@@ -120,7 +148,8 @@ const AskQuestion: React.FC = () => {
             type="text"
             id="option_5"
             name="option_5"
-            onChange={handleInputChange}
+            onChange={handleOption5Change}
+            value={option5}
           />
         </div>
         <button>{fingerprint ? "Criar Pergunta" : "Aguarde..."}</button>

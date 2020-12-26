@@ -11,7 +11,7 @@ const Routes: React.FC = () => (
     <Route path="/" exact component={Landing} />
     <Route path="/answer/:questionId" component={AnswerQuestion} />
     <Route path="/ask" component={AskQuestion} />
-    <Route path="/result" component={Result} />
+    <Route path="/result/:questionId" component={Result} />
   </Switch>
 );
 
