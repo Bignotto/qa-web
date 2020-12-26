@@ -40,7 +40,8 @@
   margin-right: 10px;
 }
 
-#page-result h1 {
+#page-result h1,
+h3 {
   margin-left: 10px;
 }
 
