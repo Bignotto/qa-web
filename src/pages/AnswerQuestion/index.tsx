@@ -72,7 +72,7 @@ const AnswerQuestion: React.FC = () => {
       console.log(answer, error.response);
     }
 
-    history.push("/result");
+    history.push(`/result/${questionId}`);
   }
 
   return (
